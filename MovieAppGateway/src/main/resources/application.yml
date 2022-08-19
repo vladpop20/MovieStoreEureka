@@ -1,0 +1,45 @@
+server:
+  port: 9000
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: authenticationService
+          uri: http://localhost:8080
+          predicates:
+            - Path=/movieapp/v1/auth/**
+
+        - id: DownloadService
+          uri: http://localhost:8083
+          predicates:
+            - Path=/movieapp/v1/download/**
+
+        - id: FavouriteService
+          uri: http://localhost:8084
+          predicates:
+            - Path=/movieapp/v1/favourite/**
+
+        - id: feedbackService
+          uri: http://localhost:8085
+          predicates:
+            - Path=/movieapp/v1/feedback/**
+
+        - id: movieService
+          uri: http://localhost:8082
+          predicates:
+            - Path=/movieapp/v1/movie/**
+
+  application:
+    name: gatewayApp
+  mvc:
+    pathmatch:
+      matching-strategy: ant-path-matcher
+
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
